@@ -9,7 +9,7 @@ Its goal is to become the [AUTOMATIC1111/stable-diffusion-webui](https://github.
 
 ### Manual installation using Conda
 
-Recommended if you have some experience with the command line.
+Recommended if you have some experience with the command line. Install CUDA 12.1 first.
 
 #### 0. Install Conda
 
@@ -39,6 +39,18 @@ conda activate textgen
 
 The up-to-date commands can be found here: https://pytorch.org/get-started/locally/.
 
+If fastapi and llama-cpp-python fail to install:
+```
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+fastapi 0.99.1 requires typing-extensions>=4.5.0, but you have typing-extensions 4.4.0 which is incompatible.
+llama-cpp-python 0.1.66 requires typing-extensions>=4.5.0, but you have typing-extensions 4.4.0 which is incompatible.
+```
+Try to manually install
+```
+pip install typing-extensions==4.5.0
+pip install fastapi==0.99.1 llama-cpp-python --force-reinstall
+```
+
 #### 2.1 Install cuda-11.7.1
 https://anaconda.org/nvidia/cuda-toolkit
 ```
@@ -66,6 +78,15 @@ pip install -r requirements.txt
 
 Requires the additional compilation step described here: [GPU acceleration](https://github.com/oobabooga/text-generation-webui/blob/main/docs/llama.cpp-models.md#gpu-acceleration).
 
+#### bitsandbytes
+
+bitsandbytes >= 0.39 may not work on older NVIDIA GPUs. In that case, to use --load-in-8bit, you may have to downgrade like this:
+
+Linux: pip install bitsandbytes==0.38.1
+
+Windows: pip install https://github.com/jllllll/bitsandbytes-windows-webui/raw/main/bitsandbytes-0.38.1-py3-none-any.whl
+
+https://github.com/jllllll/bitsandbytes-windows-webui
 
 ### Updating the requirements
 
@@ -131,7 +152,7 @@ When you load this model in default or notebook modes, the "HTML" tab will show 
 ## Starting the web UI
 Run a Python script in a conda env: https://gist.github.com/maximlt/531419545b039fa33f8845e5bc92edd6
 
-Create a start.bat in the parent folder of text-generation-webui
+Create a webui.bat in the parent folder of text-generation-webui
 ```
 @echo off
 D:
